@@ -207,3 +207,12 @@ def get_txn_msg(data):
         return ""
 
     return message
+
+def find_transactions_by_address(data):
+
+    try:
+        list_result = api.find_transactions(addresses=[data])
+    except BaseException:
+        return []
+
+    return list_result

@@ -1,7 +1,7 @@
 import time
 import json
 from swarm_node import get_tips, send_transfer, \
-    find_transactions_by_tag, get_txn_msg
+    find_transactions_by_tag, get_txn_msg, find_transactions_by_address
 
 address = "BXEOYAONFPBGKEUQZDUZZZODHWJDWHEOYY9AENYF9VNLXZHXBOODCOTYXW9MGGINTEJPLK9AGOPTPODVX"
 
@@ -39,6 +39,9 @@ def load(data):
     elif request_data['command'] == "new_group":
         result = new_group(data)
         return result
+    elif request_data['command'] == "get_all_claims_in_channel":
+        result = get_all_claims_in_channel(data)
+        return result
 
 
 def new_claim(data):
@@ -49,7 +52,10 @@ def new_claim(data):
 
     # Set output transaction
     tag = data['uuid'] + "C"
-    response = send_transfer(tag, json.dumps(data), address, 0, dict_tips, debug=0)
+    if 'addr' in data:
+        response = send_transfer(tag, json.dumps(data), data['addr'], 0, dict_tips, debug=0)
+    else:
+        response = send_transfer(tag, json.dumps(data), address, 0, dict_tips, debug=0)
 
     return str(response)
 
@@ -175,3 +181,20 @@ def new_group(data):
     response = send_transfer(tag, json.dumps(data), address, 0, dict_tips, debug=0)
 
     return str(response)
+
+def get_all_claims_in_channel(data):
+    data = json.loads(data)
+
+    address = data['channel'].ljust(81,'9')
+    list_claims = find_transactions_by_address(address)
+
+    if len(list_claims) == 0:
+        return []
+
+    list_claims = list_claims['hashes']
+
+    list_output = []
+    for obj in list_claims:
+        list_output.append(str(obj))
+
+    return str(list_output)

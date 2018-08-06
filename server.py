@@ -7,6 +7,7 @@ from optparse import OptionParser
 from swarm_node import send_transfer, get_tips, generate_address
 
 from extensions.tangleid import main as extension_tangleid
+from extensions.ipm import main as extension_ipm
 
 PORT = 8000
 
@@ -44,25 +45,19 @@ class RequestHandler(BaseHTTPRequestHandler):
         print("Get request data ... %s" % (str(request_data)))
 
         request_command = json.loads(request_data)
+        result = -1
 
-        if request_command['command'] == "generate_address":
-            result = generate_address()
-        elif request_command['command'] == "get_tips":
-            result = get_tips(int(request_command['type']))
-        elif request_command['command'] == "send_transfer":
-            if 'debug' not in request_command:
-                debug = 0
-            else:
-                debug = int(request_command['debug'])
-
-            dict_tips = get_tips(int(request_command['tips_type']))
-            result = send_transfer(
-                request_command['tag'], request_command['message'], request_command['address'], int(
-                    request_command['value']), dict_tips, debug)
-        else:
+        if request_command['extension'] == "tangleid":
             result = extension_tangleid.load(request_data)
+        elif request_command['extension'] == "ipm":
+            result = extension_ipm.load(request_data)
+        else:
+            result = swarm_node_commands(request_command)
 
-        print("Result ... %s" % (str(result)))
+        if result == -1:
+           print("Invalid request, check 'command' key-value pairs in request data")
+        else:
+            print("Result ... %s" % (str(result)))
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -76,5 +71,25 @@ def http_server():
     server = HTTPServer(('', PORT), RequestHandler)
     server.serve_forever()
 
+
+def swarm_node_commands(request_command):
+    result = -1
+
+    if request_command['command'] == "generate_address":
+        result = generate_address()
+    elif request_command['command'] == "get_tips":
+        result = get_tips(int(request_command['type']))
+    elif request_command['command'] == "send_transfer":
+        if 'debug' not in request_command:
+            debug = 0
+        else:
+            debug = int(request_command['debug'])
+
+        dict_tips = get_tips(int(request_command['tips_type']))
+        result = send_transfer(
+            request_command['tag'], request_command['message'], request_command['address'], int(
+                request_command['value']), dict_tips, debug)
+
+    return result
 
 http_server()

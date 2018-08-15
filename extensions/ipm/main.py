@@ -5,12 +5,7 @@ from swarm_node import get_tips, send_transfer, \
 
 def load(data):
     result = ""
-
-    print "Hello get data " + str(data)
-
     request_data = json.loads(data)
-
-    print "Hello command == " + str(request_data['command'])
 
     if request_data['command'] == "new_claim":
         result = bundle_hash = new_claim(data)

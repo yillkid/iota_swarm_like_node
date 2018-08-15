@@ -5,9 +5,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from optparse import OptionParser
 
 from swarm_node import send_transfer, get_tips, generate_address
-
-from extensions.tangleid import main as extension_tangleid
-from extensions.ipm import main as extension_ipm
+from extensions.loader import call_plugin
 
 PORT = 8000
 
@@ -47,10 +45,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         request_command = json.loads(request_data)
         result = -1
 
-        if request_command['extension'] == "tangleid":
-            result = extension_tangleid.load(request_data)
-        elif request_command['extension'] == "ipm":
-            result = extension_ipm.load(request_data)
+        if 'extension' in request_command:
+            result = call_plugin(request_command['extension'], request_command)
         else:
             result = swarm_node_commands(request_command)
 

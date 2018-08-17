@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from service import get_tips
 
 TIPS_TYPE_IRI_REQULAR_ALGORITHM = 0

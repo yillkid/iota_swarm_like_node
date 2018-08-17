@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from service import send_transfer
 
 TIPS_TYPE_IRI_REQULAR_ALGORITHM = 0

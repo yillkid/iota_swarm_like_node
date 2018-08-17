@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from service import generate_address
 
 HOST = 'http://127.0.0.1'

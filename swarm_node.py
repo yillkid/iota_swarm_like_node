@@ -188,6 +188,23 @@ def find_transactions_by_tag(data):
 
     return list_result
 
+def find_transactions_by_address(data):
+    list_claims = []
+    try:
+        list_claims = api.find_transactions(addresses=[data])
+    except BaseException:
+        return []
+
+    if len(list_claims) == 0:
+        return []
+
+    list_claims = list_claims['hashes']
+
+    list_output = []
+    for obj in list_claims:
+        list_output.append(str(obj))
+
+    return str(list_output)
 
 def get_txn_msg(data):
     message = ""

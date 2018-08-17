@@ -6,6 +6,7 @@ all: $(DEPS)
 
 .PHONY: $(DCURL_LIB)
 $(DCURL_LIB): $(DCURL_DIR)
+	git submodule update --init $^
 	git submodule update --remote $^
 	$(MAKE) -C $^ config
 	@echo
@@ -32,3 +33,5 @@ clean:
 distclean: clean
 	$(RM) -r $(DCURL_DIR)
 	git checkout $(DCURL_DIR)
+
+include mk/python.mk

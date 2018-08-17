@@ -1,4 +1,4 @@
-# IOTA Swarm Node
+# IOTA Swarm Node [![](https://img.shields.io/badge/python-3.5-blue.svg)](https://www.python.org/download/releases/3.5.0/)
 
 ## Summary
 

@@ -8,6 +8,7 @@ from iota import Iota, Address, TryteString, Transaction
 from iota.crypto.signing import SignatureFragmentGenerator
 from iota.crypto.kerl.conv import convertToBytes, convertToTrits, \
     trits_to_trytes, trytes_to_trits
+from iota.trits import trits_from_int
 
 from config import SEED, FULLNODE
 from PoW import *
@@ -126,10 +127,13 @@ def send_transfer(tag, messages, address, values, dict_tips, debug=0):
     elapsed_pow = 0
     time_start_pow = time.time()
     for tx_tryte in trytes:
-        # TODO: Timestamp
-        # timestamp = None
-        # timestamp_lower_bound = None
-        # timestamp_upper_bound = None
+        # Attachment timestamp insert
+        timestamp = TryteString.from_trits(
+            trits_from_int(int(round(time.time() * 1000)), pad=27))
+        tx_tryte = insert_to_trytes(2619,2628, str(timestamp), tx_tryte)
+        # timestamp_lower_bound = MIN_VALUE
+        # timestamp_upper_bound = MAX_VALUE
+        tx_tryte = insert_to_trytes(2637,2646, str("MMMMMMMMM"), tx_tryte)
 
         # Tips insert - trunk
         tx_tryte = insert_to_trytes(2430, 2511, str(trunk_hash), tx_tryte)

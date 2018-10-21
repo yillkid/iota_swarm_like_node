@@ -130,10 +130,10 @@ def send_transfer(tag, messages, address, values, dict_tips, debug=0):
         # Attachment timestamp insert
         timestamp = TryteString.from_trits(
             trits_from_int(int(time.time() * 1000), pad=27))
-        tx_tryte = insert_to_trytes(2619,2628, str(timestamp), tx_tryte)
+        tx_tryte = insert_to_trytes(2619, 2628, str(timestamp), tx_tryte)
         # timestamp_lower_bound = MIN_VALUE
         # timestamp_upper_bound = MAX_VALUE
-        tx_tryte = insert_to_trytes(2637,2646, str("MMMMMMMMM"), tx_tryte)
+        tx_tryte = insert_to_trytes(2637, 2646, str("MMMMMMMMM"), tx_tryte)
 
         # Tips insert - trunk
         tx_tryte = insert_to_trytes(2430, 2511, str(trunk_hash), tx_tryte)

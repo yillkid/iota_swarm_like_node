@@ -10,6 +10,7 @@ Most use cases for micropayments involve a single user or device interacting
 repeatedly with a few vendors.
 
 ## Prerequisites
+This package depends on PyOTA, which is known to work with Python 3.5. However, before PyOTA issue [#203](https://github.com/iotaledger/iota.lib.py/issues/203) is resolved, Python 3.6/3.7 will be excluded for running this package. The build system would detect and validate the environment in advance.
 
 Install dependent packages:
 ```shell

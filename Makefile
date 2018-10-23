@@ -1,3 +1,4 @@
+include mk/python.mk
 DCURL_DIR := deps/dcurl
 DCURL_LIB := $(DCURL_DIR)/build/libdcurl.so
 DEPS += $(DCURL_LIB)
@@ -19,7 +20,7 @@ TESTS += $(wildcard tests/tangleid/*.sh)
 check: server.py $(DCURL_LIB)
 	@ TMP_PID=`mktemp /tmp/server_pid.XXXXXX`; \
 	echo "Running test suite..." ; \
-	( python $^ & echo $$! > $${TMP_PID} ); \
+	( $(PYTHON) $^ & echo $$! > $${TMP_PID} ); \
 	sleep 3 ; \
 	for i in $(TESTS); do \
 	    ( echo "\n\n==[ $$i ]==\n"; $$i || kill -9 `cat $${TMP_PID}` ) \

@@ -91,7 +91,7 @@ def send_transfer(tag, messages, address, values, dict_tips, debug=0):
         while (int(value_input) < int(values)):
             addy = iota.Address(dict_inputs['inputs'][index_input])
             addy.balance = dict_inputs['inputs'][index_input].balance
-            addy.key_index = 1
+            addy.key_index = dict_inputs['inputs'][index_input].key_index
             addy.security_level = TXN_SECURITY_LEVEL
 
             propose_bundle.add_inputs([addy])

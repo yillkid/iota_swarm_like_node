@@ -126,7 +126,6 @@ def send_transfer(tag, messages, address, values, dict_tips, debug=0):
     # Do PoW (attach to tangle)
     elapsed_pow = 0
     time_start_pow = time.time()
-    prev_tx = None
     for tx_tryte in trytes:
         # Attachment timestamp insert
         timestamp = TryteString.from_trits(
@@ -137,13 +136,9 @@ def send_transfer(tag, messages, address, values, dict_tips, debug=0):
         tx_tryte = insert_to_trytes(2637, 2646, str("MMMMMMMMM"), tx_tryte)
 
         # Tips insert - trunk
+        tx_tryte = insert_to_trytes(2430, 2511, str(trunk_hash), tx_tryte)
         # Tips insert - branch
-        if prev_tx is None:
-            tx_tryte = insert_to_trytes(2430, 2511, str(trunk_hash), tx_tryte)
-            tx_tryte = insert_to_trytes(2511, 2592, str(branch_hash), tx_tryte)
-        else:
-            tx_tryte = insert_to_trytes(2430, 2511, str(prev_tx), tx_tryte)
-            tx_tryte = insert_to_trytes(2511, 2592, str(trunk_hash), tx_tryte)
+        tx_tryte = insert_to_trytes(2511, 2592, str(branch_hash), tx_tryte)
 
         # Do PoW for this transaction
         print("Do POW for this transaction ...")
@@ -155,7 +150,7 @@ def send_transfer(tag, messages, address, values, dict_tips, debug=0):
         elapsed_pow = elapsed_pow + (time_end_pow - time_start_pow)
 
         # Update previous tx hash for next transaction
-        prev_tx = Transaction.from_tryte_string(tx_tryte[0:2673]).hash
+        trunk_hash = Transaction.from_tryte_string(tx_tryte[0:2673]).hash
 
         print("Prepare to broadcast ...")
         try:

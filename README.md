@@ -22,6 +22,12 @@ Install Python package dependencies:
 $ pip install -r requirements.txt
 ```
 
+(Alternative) Install dependencies and activate virtualenv with Pipenv:
+```shell
+$ pipenv install
+$ pipenv shell
+```
+
 ## Build from scratch
 
 Ensure gcc or clang available in build environment and then execute:

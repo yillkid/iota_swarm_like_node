@@ -2,12 +2,11 @@
 import json
 from flask import Flask, request
 from flask_cors import CORS
+from config import *
 
 from swarm_node import send_transfer, get_tips, generate_address
 from extensions.tangleid import main as extension_tangleid
 from utils import IotaJSONEncoder
-
-PORT = 8000
 
 app = Flask(__name__)
 CORS(app)
